@@ -1,0 +1,1539 @@
+name: semantic_model
+description: This is a model to gain patient information and whether they should be used for covid trials
+tables:
+  - name: GP_NOTES_CLEANED
+    base_table:
+      database: DEFAULT_DATABASE
+      schema: DEFAULT_SCHEMA
+      table: GP_NOTES_CLEANED
+    dimensions:
+      - name: NHS_NUMBER
+        expr: NHS_NUMBER
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - '0029959965'
+          - '0009480516'
+        description: Unique identifier for a patient within the National Health Service (NHS) in the United Kingdom, used to track and manage patient information and medical records.
+        synonyms:
+          - patient_id
+          - national_health_service_number
+          - health_service_number
+          - patient_identifier
+          - unique_patient_identifier
+          - medical_record_number
+        cortex_search_service:
+          database: DEFAULT_DATABASE
+          schema: DEFAULT_SCHEMA
+          service: PATIENT_DATA
+      - name: APPOINTMENT_DATE
+        expr: APPOINTMENT_DATE
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - '1979-06-03'
+          - '1980-07-12'
+          - '1981-09-15'
+        description: Date on which a patient had an appointment with a healthcare provider.
+        synonyms:
+          - appointment_timestamp
+          - scheduled_date
+          - visit_date
+          - consultation_date
+          - meeting_date
+          - schedule_time
+          - booking_date
+          - arranged_date
+      - name: RELATIVE_PATH
+        expr: RELATIVE_PATH
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - Pat1_doc_note_1.jpeg
+          - Pat1_doc_note_2.jpeg
+          - Pat1_doc_note_3.jpeg
+        description: The file path of a document or note associated with a patient, including the patient identifier and a unique document identifier.
+        synonyms:
+          - file_location
+          - directory_path
+          - path_to_file
+          - folder_path
+          - file_directory
+          - storage_location
+          - data_path
+      - name: CONSULTANT
+        expr: CONSULTANT
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - Dr John Bones
+          - Mrs Anne Bones
+          - P Smith
+        description: The name of the healthcare consultant who recorded the note.
+        synonyms:
+          - doctor
+          - physician
+          - medical_specialist
+          - healthcare_professional
+          - attending_doctor
+          - medical_consultant
+          - specialist_doctor
+          - practitioner
+      - name: PATIENT_NAME
+        expr: PATIENT_NAME
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - Keith Wright
+          - Keith wright
+          - keith Wright
+        description: The name of the patient associated with the note.
+        synonyms:
+          - patient_full_name
+          - full_name
+          - patient
+          - individual_name
+          - person_name
+          - client_name
+          - patient_identifier
+      - name: PRACTICE_ADDRESS
+        expr: PRACTICE_ADDRESS
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - Road, Stockton-On-Tees, TS18 3BU
+          - Bridge Street Doctors Surgery Road, Stockton-On-Tees, TS18 3BU
+          - 8 Madision Avenue Brierly Hill Dudley West Midlands DY5 1TZ
+        description: The physical location of a general practice, including the street address, city, and postcode.
+        synonyms:
+          - practice_location
+          - clinic_address
+          - doctor_office_address
+          - medical_facility_address
+          - healthcare_provider_address
+          - gp_surgery_address
+      - name: PRACTICE_PHONE
+        expr: PRACTICE_PHONE
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - 0642 555555
+          - 01384 569 050
+        description: The phone number of the GP practice.
+        synonyms:
+          - practice_telephone
+          - doctor_office_phone
+          - medical_facility_phone
+          - healthcare_provider_phone
+          - clinic_phone_number
+          - gp_phone
+      - name: PRESCRIPTION
+        expr: PRESCRIPTION
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - falbutomal inhaler
+          - Prednisalone
+        description: The type of medication prescribed to the patient.
+        synonyms:
+          - medication
+          - prescribed_med
+          - prescription_order
+          - rx
+          - medication_order
+          - prescribed_treatment
+      - name: GP_NOTES
+        expr: GP_NOTES
+        data_type: VARCHAR(16777216)
+    primary_key:
+      columns:
+        - NHS_NUMBER
+  - name: SYNTHETIC_POPULATION
+    base_table:
+      database: DEFAULT_DATABASE
+      schema: DEFAULT_SCHEMA
+      table: SYNTHETIC_POPULATION
+    dimensions:
+      - name: NHS_NUMBER
+        expr: NHS_NUMBER
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - '0052070919'
+          - '0012716896'
+          - '0030451605'
+        description: A unique identifier assigned to each individual in the National Health Service (NHS) in the United Kingdom, used to track and manage their healthcare records.
+        synonyms:
+          - national_health_service_number
+          - health_service_number
+          - patient_id
+          - medical_record_number
+          - unique_patient_identifier
+          - healthcare_id
+      - name: FIRST_NAME
+        expr: FIRST_NAME
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - Joan
+          - Lynn
+          - Vicente
+        description: The first name of an individual in the synthetic population.
+        synonyms:
+          - forename
+          - given_name
+          - personal_name
+          - christian_name
+          - name
+          - personal_identification
+      - name: LAST_NAME
+        expr: LAST_NAME
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - Petrich
+          - Bellocchio
+          - Mcnew
+        description: The last name of an individual in the synthetic population.
+        synonyms:
+          - surname
+          - family_name
+          - second_name
+          - full_name
+          - name
+      - name: MARITAL_STATUS
+        expr: MARITAL_STATUS
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - Single
+          - <16 years old therefore ineligible to marry
+          - ' Married or in a same sex civil partnership'
+        description: The marital status of an individual, indicating whether they are single, married, or in a same-sex civil partnership, with a specific category for those under 16 years old who are not eligible to marry.
+        synonyms:
+          - civil_status
+          - marital_condition
+          - relationship_status
+          - family_status
+          - partnership_status
+      - name: GENERAL_HEALTH
+        expr: GENERAL_HEALTH
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - ' Good'
+          - Very Good
+          - Very Bad
+        description: 'This column represents the general health status of an individual in the synthetic population, categorized into three levels: Good, Very Good, and Very Bad, indicating the overall well-being or health condition of the person.'
+        synonyms:
+          - overall_health
+          - well_being
+          - health_status
+          - physical_condition
+          - medical_condition
+          - wellness
+          - health_state
+      - name: OCCUPATION
+        expr: OCCUPATION
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - Administrative and secretarial occupations
+          - Caring, Leisure and other service occupations
+          - <16 years old
+        description: This column represents the occupation of an individual in the synthetic population, categorizing them into groups such as administrative and secretarial roles, caring and leisure services, or those who are under 16 years old and not yet part of the workforce.
+        synonyms:
+          - job
+          - profession
+          - career
+          - employment
+          - vocation
+          - work
+          - trade
+          - calling
+          - line_of_work
+          - profession_type
+      - name: SEX
+        expr: SEX
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - Female
+          - Male
+        description: The sex of the individual in the synthetic population.
+        synonyms:
+          - gender
+          - biological sex
+          - sex category
+          - sex type
+          - male or female
+      - name: HOUSEHOLD_TYPE
+        expr: HOUSEHOLD_TYPE
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - Two adults and 1 child
+          - Complex other
+          - Two adults - 65 +
+        description: The type of household, categorized by the number and age of occupants.
+        synonyms:
+          - family_type
+          - household_status
+          - domestic_status
+          - residential_status
+          - family_structure
+          - household_composition
+          - living_arrangement
+          - family_classification
+      - name: LOCAL_AUTHORITY
+        expr: LOCAL_AUTHORITY
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - Sefton District (B)
+          - Hinckley and Bosworth District (B)
+        description: The local authority district in which the synthetic population resides, as defined by the UK Government's administrative geography.
+        synonyms:
+          - council
+          - municipality
+          - local_government
+          - local_council
+          - regional_authority
+          - governing_body
+          - administrative_area
+          - local_administration
+      - name: ETHNICITY
+        expr: ETHNICITY
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - White
+          - Asian
+          - Black
+        description: The ETHNICITY column represents the racial or ethnic identity of an individual in the synthetic population, categorized as White, Asian, or Black.
+        synonyms:
+          - race
+          - ancestry
+          - cultural_background
+          - ethnic_origin
+          - heritage
+          - nationality
+      - name: BODY_WEIGHT
+        expr: BODY_WEIGHT
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - Overweight
+          - Underweight
+          - Idealweight
+        description: 'This column categorizes individuals based on their body weight relative to a standard or healthy range, with three possible categories: Overweight (exceeding the healthy weight range), Underweight (below the healthy weight range), and Ideal weight (within the healthy weight range).'
+        synonyms:
+          - weight
+          - body_mass
+          - mass
+          - pounds
+          - kilograms
+          - body_size
+          - size
+          - heaviness
+    facts:
+      - name: AGE
+        expr: AGE
+        data_type: NUMBER(38,0)
+        sample_values:
+          - '47'
+          - '69'
+          - '15'
+        description: The age of an individual in the synthetic population.
+        synonyms:
+          - years_old
+          - years_of_age
+          - age_in_years
+          - years_alive
+          - years_lived
+      - name: CANCER
+        expr: CANCER
+        data_type: NUMBER(38,0)
+        sample_values:
+          - '1'
+        description: Indicates whether the individual has been diagnosed with cancer.
+        synonyms:
+          - tumor
+          - carcinoma
+          - oncology
+          - malignancy
+          - neoplasm
+      - name: DIABETES
+        expr: DIABETES
+        data_type: NUMBER(38,0)
+        sample_values:
+          - '1'
+        description: Indicates whether the individual has been diagnosed with diabetes.
+        synonyms:
+          - diabetes_status
+          - diabetic_condition
+          - diabetes_presence
+          - has_diabetes
+          - diabetes_indicator
+      - name: COPD
+        expr: COPD
+        data_type: NUMBER(38,0)
+        sample_values:
+          - '1'
+        description: Indicates whether the individual has been diagnosed with Chronic Obstructive Pulmonary Disease (COPD).
+        synonyms:
+          - chronic obstructive pulmonary disease
+          - chronic bronchitis
+          - emphysema
+          - lung disease
+          - respiratory disease
+      - name: ASTHMA
+        expr: ASTHMA
+        data_type: NUMBER(38,0)
+        sample_values:
+          - '1'
+        description: Indicates whether the individual has been diagnosed with asthma.
+        synonyms:
+          - asthma_disease
+          - asthma_condition
+          - respiratory_condition
+          - breathing_condition
+          - chronic_respiratory_disease
+      - name: HYPERTENSION
+        expr: HYPERTENSION
+        data_type: NUMBER(38,0)
+        sample_values:
+          - '1'
+        description: Indicates whether the individual has been diagnosed with hypertension (high blood pressure).
+        synonyms:
+          - high_blood_pressure
+          - hypertension_disease
+          - high_blood_pressure_condition
+          - blood_pressure_disorder
+          - cardiovascular_condition
+      - name: MORBILITIES
+        expr: MORBILITIES
+        data_type: NUMBER(38,0)
+        sample_values:
+          - '1'
+          - '0'
+          - '2'
+        description: The number of morbidities, or chronic health conditions, an individual has.
+        synonyms:
+          - health_conditions
+          - chronic_conditions
+          - disabilities
+          - medical_conditions
+          - comorbidities
+          - illnesses
+          - health_problems
+          - medical_history
+    primary_key:
+      columns:
+        - NHS_NUMBER
+    description: 'This is a dataset that has all of the people in the UK. '
+    synonyms:
+      - Synthetic Population
+      - Population Data
+      - Demographic Information
+      - Citizen Data
+      - Resident Information
+      - Population Statistics
+      - Synthetic Citizens
+      - Virtual Population
+      - Simulated Population
+      - Artificial Population
+      - Population Sample
+      - Demographic Sample
+      - Statistical Population
+      - Population Dataset
+      - Synthetic Data
+      - Population Information
+      - Resident Data
+      - Citizen Information
+      - Demographic Data
+      - Population Details
+      - Synthetic Residents
+      - Virtual Citizens
+      - Population Overview
+      - Demographic Overview
+      - Statistical Overview
+      - Population Summary
+      - Synthetic Summary
+      - Demographic Summary
+      - Resident Summary
+      - Citizen Summary
+      - Population Insights
+      - Demographic Insights
+      - Statistical Insights
+      - Synthetic Insights
+      - Population Analysis
+      - Demographic Analysis
+      - Statistical Analysis
+      - Synthetic Analysis
+      - Population Research
+      - Demographic Research
+      - Statistical Research
+      - Synthetic Research
+      - Population Study
+      - Demographic Study
+      - Statistical Study
+      - Synthetic Study
+      - Population Report
+      - Demographic Report
+      - Statistical Report
+      - Synthetic Report
+      - Population Findings
+      - Demographic Findings
+      - Statistical Findings
+      - Synthetic Findings
+      - Population Trends
+      - Demographic Trends
+      - Statistical Trends
+      - Synthetic Trends
+      - Population Patterns
+      - Demographic Patterns
+      - Statistical Patterns
+      - Synthetic Patterns
+      - Population Characteristics
+      - Demographic Characteristics
+      - Statistical Characteristics
+      - Synthetic Characteristics
+      - Population Attributes
+      - Demographic Attributes
+      - Statistical Attributes
+      - Synthetic Attributes
+      - Population Features
+      - Demographic Features
+      - Statistical Features
+      - Synthetic Features
+      - Population Profile
+      - Demographic Profile
+      - Statistical Profile
+      - Synthetic Profile
+      - Population Portrait
+      - Demographic Portrait
+      - Statistical Portrait
+      - Synthetic Portrait
+      - Population Landscape
+      - Demographic Landscape
+      - Statistical Landscape
+      - Synthetic Landscape
+      - Population Outlook
+      - Demographic Outlook
+      - Statistical Outlook
+      - Synthetic Outlook
+      - Population View
+      - Demographic View
+      - Statistical View
+      - Synthetic View
+      - Population Perspective
+      - Demographic Perspective
+      - Statistical Perspective
+      - Synthetic Perspective
+      - Population Insight
+      - Demographic Insight
+      - Statistical Insight
+      - Synthetic Insight
+      - Population Analysis Report
+      - Demographic Analysis Report
+      - Statistical Analysis Report
+      - Synthetic Analysis Report
+      - Population Research Report
+      - Demographic Research Report
+      - Statistical Research Report
+      - Synthetic Research Report
+      - Population Study Report
+      - Demographic Study Report
+      - Statistical Study Report
+      - Synthetic Study Report
+      - Population Findings Report
+      - Demographic Findings Report
+      - Statistical Findings Report
+      - Synthetic Findings Report
+      - Population Trends Report
+      - Demographic Trends Report
+      - Statistical Trends Report
+      - Synthetic Trends Report
+      - Population Patterns Report
+      - Demographic Patterns Report
+      - Statistical Patterns Report
+      - Synthetic Patterns Report
+      - Population Characteristics Report
+      - Demographic Characteristics Report
+      - Statistical Characteristics Report
+      - Synthetic Characteristics Report
+      - Population Attributes Report
+      - Demographic Attributes Report
+      - Statistical Attributes Report
+      - Synthetic Attributes Report
+      - Population Features Report
+      - Demographic Features Report
+      - Statistical Features Report
+      - Synthetic Features Report
+      - Population Profile Report
+      - Demographic Profile Report
+      - Statistical Profile Report
+      - Synthetic Profile Report
+      - Population Portrait Report
+      - Demographic Portrait Report
+      - Statistical Portrait Report
+      - Synthetic Portrait Report
+      - Population Landscape Report
+      - Demographic Landscape Report
+      - Statistical Landscape Report
+      - Synthetic Landscape Report
+      - Population Outlook Report
+      - Demographic Outlook Report
+      - Statistical Outlook Report
+      - Synthetic Outlook Report
+      - Population View Report
+      - Demographic View Report
+      - Statistical View Report
+      - Synthetic View Report
+      - Population Perspective Report
+      - Demographic Perspective Report
+      - Statistical Perspective Report
+      - Synthetic Perspective Report
+      - Population Insight Report
+      - Demographic Insight Report
+      - Statistical Insight Report
+      - Synthetic Insight Report
+      - Synthetic Population Data
+      - Synthetic Demographic Information
+      - Synthetic Citizen Data
+      - Synthetic Resident Information
+      - Synthetic Population Statistics
+      - Synthetic Citizens Data
+      - Synthetic Virtual Population
+      - Synthetic Simulated Population
+      - Synthetic Artificial Population
+      - Synthetic Population Sample
+      - Synthetic Demographic Sample
+      - Synthetic Statistical Population
+      - Synthetic Population Dataset
+      - Synthetic Synthetic Data
+      - Synthetic Population Information
+      - Synthetic Resident Data
+      - Synthetic Citizen Information
+      - Synthetic Demographic Data
+      - Synthetic Population Details
+      - Synthetic Residents Data
+      - Synthetic Virtual Citizens
+      - Synthetic Population Overview
+      - Synthetic Demographic Overview
+      - Synthetic Statistical Overview
+      - Synthetic Population Summary
+      - Synthetic Demographic Summary
+      - Synthetic Statistical Summary
+      - Synthetic Resident Summary
+      - Synthetic Citizen Summary
+      - Synthetic Population Insights
+      - Synthetic Demographic Insights
+      - Synthetic Statistical Insights
+      - Synthetic Insights
+      - Synthetic Population Analysis
+      - Synthetic Demographic Analysis
+      - Synthetic Statistical Analysis
+      - Synthetic Analysis
+      - Synthetic Population Research
+      - Synthetic Demographic Research
+      - Synthetic Statistical Research
+      - Synthetic Research
+      - Synthetic Population Study
+      - Synthetic Demographic Study
+      - Synthetic Statistical Study
+      - Synthetic Study
+      - Synthetic Population Report
+      - Synthetic Demographic Report
+      - Synthetic Statistical Report
+      - Synthetic Report
+      - Synthetic Population Findings
+      - Synthetic Demographic Findings
+      - Synthetic Statistical Findings
+      - Synthetic Findings
+      - Synthetic Population Trends
+      - Synthetic Demographic Trends
+      - Synthetic Statistical Trends
+      - Synthetic Trends
+      - Synthetic Population Patterns
+      - Synthetic Demographic Patterns
+      - Synthetic Statistical Patterns
+      - Synthetic Patterns
+      - Synthetic Population Characteristics
+      - Synthetic Demographic Characteristics
+      - Synthetic Statistical Characteristics
+      - Synthetic Characteristics
+      - Synthetic Population Attributes
+      - Synthetic Demographic Attributes
+      - Synthetic Statistical Attributes
+      - Synthetic Attributes
+      - Synthetic Population Features
+      - Synthetic Demographic Features
+      - Synthetic Statistical Features
+      - Synthetic Features
+      - Synthetic Population Profile
+      - Synthetic Demographic Profile
+      - Synthetic Statistical Profile
+      - Synthetic Profile
+      - Synthetic Population Portrait
+      - Synthetic Demographic Portrait
+      - Synthetic Statistical Portrait
+      - Synthetic Portrait
+      - Synthetic Population Landscape
+      - Synthetic Demographic Landscape
+      - Synthetic Statistical Landscape
+      - Synthetic Landscape
+      - Synthetic Population Outlook
+      - Synthetic Demographic Outlook
+      - Synthetic Statistical Outlook
+      - Synthetic Outlook
+      - Synthetic Population View
+      - Synthetic Demographic View
+      - Synthetic Statistical View
+      - Synthetic View
+      - Synthetic Population Perspective
+      - Synthetic Demographic Perspective
+      - Synthetic Statistical Perspective
+      - Synthetic Perspective
+      - Synthetic Population Insight
+      - Synthetic Demographic Insight
+      - Synthetic Statistical Insight
+      - Synthetic Insight
+      - Synthetic Population Analysis Report
+      - Synthetic Demographic Analysis Report
+      - Synthetic Statistical Analysis Report
+      - Synthetic Analysis Report
+      - Synthetic Population Research Report
+      - Synthetic Demographic Research Report
+      - Synthetic Statistical Research Report
+      - Synthetic Research Report
+      - Synthetic Population Study Report
+      - Synthetic Demographic Study Report
+      - Synthetic Statistical Study Report
+      - Synthetic Study Report
+      - Synthetic Population Findings Report
+      - Synthetic Demographic Findings Report
+      - Synthetic Statistical Findings Report
+      - Synthetic Findings Report
+      - Synthetic Population Trends Report
+      - Synthetic Demographic Trends Report
+      - Synthetic Statistical Trends Report
+      - Synthetic Trends Report
+      - Synthetic Population Patterns Report
+      - Synthetic Demographic Patterns Report
+      - Synthetic Statistical Patterns Report
+      - Synthetic Patterns Report
+      - Synthetic Population Characteristics Report
+      - Synthetic Demographic Characteristics Report
+      - Synthetic Statistical Characteristics Report
+      - Synthetic Characteristics Report
+      - Synthetic Population Attributes Report
+      - Synthetic Demographic Attributes Report
+      - Synthetic Statistical Attributes Report
+      - Synthetic Attributes Report
+      - Synthetic Population Features Report
+      - Synthetic Demographic Features Report
+      - Synthetic Statistical Features Report
+      - Synthetic Features Report
+      - Synthetic Population Profile Report
+      - Synthetic Demographic Profile Report
+      - Synthetic Statistical Profile Report
+      - Synthetic Profile Report
+      - Synthetic Population Portrait Report
+      - Synthetic Demographic Portrait Report
+      - Synthetic Statistical Portrait Report
+      - Synthetic Portrait Report
+      - Synthetic Population Landscape Report
+      - Synthetic Demographic Landscape Report
+      - Synthetic Statistical Landscape Report
+      - Synthetic Landscape Report
+      - Synthetic Population Outlook Report
+      - Synthetic Demographic Outlook Report
+      - Synthetic Statistical Outlook Report
+      - Synthetic Outlook Report
+      - Synthetic Population View Report
+      - Synthetic Demographic View Report
+      - Synthetic Statistical View Report
+      - Synthetic View Report
+      - Synthetic Population Perspective Report
+      - Synthetic Demographic Perspective Report
+      - Synthetic Statistical Perspective Report
+      - Synthetic Perspective Report
+      - Synthetic Population Insight Report
+      - Synthetic Demographic Insight Report
+      - Synthetic Statistical Insight Report
+      - Synthetic Insight Report
+      - Synthetic Population Data
+      - Synthetic Demographic Data
+      - Synthetic Citizen Data
+      - Synthetic Resident Data
+      - Synthetic Population Statistics
+      - Synthetic Citizens Data
+      - Synthetic Virtual Population
+      - Synthetic Simulated Population
+      - Synthetic Artificial Population
+      - Synthetic Population Sample
+      - Synthetic Demographic Sample
+      - Synthetic Statistical Population
+      - Synthetic Population Dataset
+      - Synthetic Synthetic Data
+      - Synthetic Population Information
+      - Synthetic Resident Information
+      - Synthetic Citizen Information
+      - Synthetic Demographic Information
+      - Synthetic Population Details
+      - Synthetic Residents
+      - Synthetic Virtual Citizens
+      - Synthetic Population Overview
+      - Synthetic Demographic Overview
+      - Synthetic Statistical Overview
+      - Synthetic Population Summary
+      - Synthetic Demographic Summary
+      - Synthetic Statistical Summary
+      - Synthetic Resident Summary
+      - Synthetic Citizen Summary
+      - Synthetic Population Insights
+      - Synthetic Demographic Insights
+      - Synthetic Statistical Insights
+      - Synthetic Insights
+      - Synthetic Population Analysis
+      - Synthetic Demographic Analysis
+      - Synthetic Statistical Analysis
+      - Synthetic Analysis
+      - Synthetic Population Research
+      - Synthetic Demographic Research
+      - Synthetic Statistical Research
+      - Synthetic Research
+      - Synthetic Population Study
+      - Synthetic Demographic Study
+      - Synthetic Statistical Study
+      - Synthetic Study
+      - Synthetic Population Report
+      - Synthetic Demographic Report
+      - Synthetic Statistical Report
+      - Synthetic Report
+      - Synthetic Population Findings
+      - Synthetic Demographic Findings
+      - Synthetic Statistical Findings
+      - Synthetic Findings
+      - Synthetic Population Trends
+      - Synthetic Demographic Trends
+      - Synthetic Statistical Trends
+      - Synthetic Trends
+      - Synthetic Population Patterns
+      - Synthetic Demographic Patterns
+      - Synthetic Statistical Patterns
+      - Synthetic Patterns
+      - Synthetic Population Characteristics
+      - Synthetic Demographic Characteristics
+      - Synthetic Statistical Characteristics
+      - Synthetic Characteristics
+      - Synthetic Population Attributes
+      - Synthetic Demographic Attributes
+      - Synthetic Statistical Attributes
+      - Synthetic Attributes
+      - Synthetic Population Features
+      - Synthetic Demographic Features
+      - Synthetic Statistical Features
+      - Synthetic Features
+      - Synthetic Population Profile
+      - Synthetic Demographic Profile
+      - Synthetic Statistical Profile
+      - Synthetic Profile
+      - Synthetic Population Portrait
+      - Synthetic Demographic Portrait
+      - Synthetic Statistical Portrait
+      - Synthetic Portrait
+      - Synthetic Population Landscape
+      - Synthetic Demographic Landscape
+      - Synthetic Statistical Landscape
+      - Synthetic Landscape
+      - Synthetic Population Outlook
+      - Synthetic Demographic Outlook
+      - Synthetic Statistical Outlook
+      - Synthetic Outlook
+      - Synthetic Population View
+      - Synthetic Demographic View
+      - Synthetic Statistical View
+      - Synthetic View
+      - Synthetic Population Perspective
+      - Synthetic Demographic Perspective
+      - Synthetic Statistical Perspective
+      - Synthetic Perspective
+      - Synthetic Population Insight
+      - Synthetic Demographic Insight
+      - Synthetic Statistical Insight
+      - Synthetic Insight
+      - Synthetic Population Analysis Report
+      - Synthetic Demographic Analysis Report
+      - Synthetic Statistical Analysis Report
+      - Synthetic Analysis Report
+      - Synthetic Population Research Report
+      - Synthetic Demographic Research Report
+      - Synthetic Statistical Research Report
+      - Synthetic Research Report
+      - Synthetic Population Study Report
+      - Synthetic Demographic Study Report
+      - Synthetic Statistical Study Report
+      - Synthetic Study Report
+      - Synthetic Population Findings Report
+      - Synthetic Demographic Findings Report
+      - Synthetic Statistical Findings Report
+      - Synthetic Findings Report
+      - Synthetic Population Trends Report
+      - Synthetic Demographic Trends Report
+      - Synthetic Statistical Trends Report
+      - Synthetic Trends Report
+      - Synthetic Population Patterns Report
+      - Synthetic Demographic Patterns Report
+      - Synthetic Statistical Patterns Report
+      - Synthetic Patterns Report
+      - Synthetic Population Characteristics Report
+      - Synthetic Demographic Characteristics Report
+      - Synthetic Statistical Characteristics Report
+      - Synthetic Characteristics Report
+      - Synthetic Population Attributes Report
+      - Synthetic Demographic Attributes Report
+      - Synthetic Statistical Attributes Report
+      - Synthetic Attributes Report
+      - Synthetic Population Features Report
+      - Synthetic Demographic Features Report
+      - Synthetic Statistical Features Report
+      - Synthetic Features Report
+      - Synthetic Population Profile Report
+      - Synthetic Demographic Profile Report
+      - Synthetic Statistical Profile Report
+      - Synthetic Profile Report
+      - Synthetic Population Portrait Report
+      - Synthetic Demographic Portrait Report
+      - Synthetic Statistical Portrait Report
+      - Synthetic Portrait Report
+      - Synthetic Population Landscape Report
+      - Synthetic Demographic Landscape Report
+      - Synthetic Statistical Landscape Report
+      - Synthetic Landscape Report
+      - Synthetic Population Outlook Report
+      - Synthetic Demographic Outlook Report
+      - Synthetic Statistical Outlook Report
+      - Synthetic Outlook Report
+      - Synthetic Population View Report
+      - Synthetic Demographic View Report
+      - Synthetic Statistical View Report
+      - Synthetic View Report
+      - Synthetic Population Perspective Report
+      - Synthetic Demographic Perspective Report
+      - Synthetic Statistical Perspective Report
+      - Synthetic Perspective Report
+      - Synthetic Population Insight Report
+      - Synthetic Demographic Insight Report
+      - Synthetic Statistical Insight Report
+      - Synthetic Insight Report
+      - Synthetic Population Data
+      - Synthetic Demographic Data
+      - Synthetic Citizen Data
+      - Synthetic Resident Data
+      - Synthetic Population Statistics
+      - Synthetic Citizens Data
+      - Synthetic Virtual Population
+      - Synthetic Simulated Population
+      - Synthetic Artificial Population
+      - Synthetic Population Sample
+      - Synthetic Demographic Sample
+      - Synthetic Statistical Population
+      - Synthetic Population Dataset
+      - Synthetic Synthetic Data
+      - Synthetic Population Information
+      - Synthetic Resident Information
+      - Synthetic Citizen Information
+      - Synthetic Demographic Information
+      - Synthetic Population Details
+      - Synthetic Residents
+      - Synthetic Virtual Citizens
+      - Synthetic Population Overview
+      - Synthetic Demographic Overview
+      - Synthetic Statistical Overview
+      - Synthetic Population Summary
+      - Synthetic Demographic Summary
+      - Synthetic Statistical Summary
+      - Synthetic Resident Summary
+      - Synthetic Citizen Summary
+      - Synthetic Population Insights
+      - Synthetic Demographic Insights
+      - Synthetic Statistical Insights
+      - Synthetic Insights
+      - Synthetic Population Analysis
+      - Synthetic Demographic Analysis
+      - Synthetic Statistical Analysis
+      - Synthetic Analysis
+      - Synthetic Population Research
+      - Synthetic Demographic Research
+      - Synthetic Statistical Research
+      - Synthetic Research
+      - Synthetic Population Study
+      - Synthetic Demographic Study
+      - Synthetic Statistical Study
+      - Synthetic Study
+      - Synthetic Population Report
+      - Synthetic Demographic Report
+      - Synthetic Statistical Report
+      - Synthetic Report
+      - Synthetic Population Findings
+      - Synthetic Demographic Findings
+      - Synthetic Statistical Findings
+      - Synthetic Findings
+      - Synthetic Population Trends
+      - Synthetic Demographic Trends
+      - Synthetic Statistical Trends
+      - Synthetic Trends
+      - Synthetic Population Patterns
+      - Synthetic Demographic Patterns
+      - Synthetic Statistical Patterns
+      - Synthetic Patterns
+      - Synthetic Population Characteristics
+      - Synthetic Demographic Characteristics
+      - Synthetic Statistical Characteristics
+      - Synthetic Characteristics
+      - Synthetic Population Attributes
+      - Synthetic Demographic Attributes
+      - Synthetic Statistical Attributes
+      - Synthetic Attributes
+      - Synthetic Population Features
+      - Synthetic Demographic Features
+      - Synthetic Statistical Features
+      - Synthetic Features
+      - Synthetic Population Profile
+      - Synthetic Demographic Profile
+      - Synthetic Statistical Profile
+      - Synthetic Profile
+      - Synthetic Population Portrait
+      - Synthetic Demographic Portrait
+      - Synthetic Statistical Portrait
+      - Synthetic Portrait
+      - Synthetic Population Landscape
+      - Synthetic Demographic Landscape
+      - Synthetic Statistical Landscape
+      - Synthetic Landscape
+      - Synthetic Population Outlook
+      - Synthetic Demographic Outlook
+      - Synthetic Statistical Outlook
+      - Synthetic Outlook
+      - Synthetic Population View
+      - Synthetic Demographic View
+      - Synthetic Statistical View
+      - Synthetic View
+      - Synthetic Population Perspective
+      - Synthetic Demographic Perspective
+      - Synthetic Statistical Perspective
+      - Synthetic Perspective
+      - Synthetic Population Insight
+      - Synthetic Demographic Insight
+      - Synthetic Statistical Insight
+      - Synthetic Insight
+      - Synthetic Population Analysis Report
+      - Synthetic Demographic Analysis Report
+      - Synthetic Statistical Analysis Report
+      - Synthetic Analysis Report
+      - Synthetic Population Research Report
+      - Synthetic Demographic Research Report
+      - Synthetic Statistical Research Report
+      - Synthetic Research Report
+      - Synthetic Population Study Report
+      - Synthetic Demographic Study Report
+      - Synthetic Statistical Study Report
+      - Synthetic Study Report
+      - Synthetic Population Findings Report
+      - Synthetic Demographic Findings Report
+      - Synthetic Statistical Findings Report
+      - Synthetic Findings Report
+      - Synthetic Population Trends Report
+      - Synthetic Demographic Trends Report
+      - Synthetic Statistical Trends Report
+      - Synthetic Trends Report
+      - Synthetic Population Patterns Report
+      - Synthetic Demographic Patterns Report
+      - Synthetic Statistical Patterns Report
+      - Synthetic Patterns Report
+      - Synthetic Population Characteristics Report
+      - Synthetic Demographic Characteristics Report
+      - Synthetic Statistical Characteristics Report
+      - Synthetic Characteristics Report
+      - Synthetic Population Attributes Report
+      - Synthetic Demographic Attributes Report
+      - Synthetic Statistical Attributes Report
+      - Synthetic Attributes Report
+      - Synthetic Population Features Report
+      - Synthetic Demographic Features Report
+      - Synthetic Statistical Features Report
+      - Synthetic Features Report
+      - Synthetic Population Profile Report
+      - Synthetic Demographic Profile Report
+      - Synthetic Statistical Profile Report
+      - Synthetic Profile Report
+      - Synthetic Population Portrait Report
+      - Synthetic Demographic Portrait Report
+      - Synthetic Statistical Portrait Report
+      - Synthetic Portrait Report
+      - Synthetic Population Landscape Report
+      - Synthetic Demographic Landscape Report
+      - Synthetic Statistical Landscape Report
+      - Synthetic Landscape Report
+      - Synthetic Population Outlook Report
+      - Synthetic Demographic Outlook Report
+      - Synthetic Statistical Outlook Report
+      - Synthetic Outlook Report
+      - Synthetic Population View Report
+      - Synthetic Demographic View Report
+      - Synthetic Statistical View Report
+      - Synthetic View Report
+      - Synthetic Population Perspective Report
+      - Synthetic Demographic Perspective Report
+      - Synthetic Statistical Perspective Report
+      - Synthetic Perspective Report
+      - Synthetic Population Insight Report
+      - Synthetic Demographic Insight Report
+      - Synthetic Statistical Insight Report
+      - Synthetic Insight Report
+      - Synthetic Population Data
+      - Synthetic Demographic Data
+      - Synthetic Citizen Data
+      - Synthetic Resident Data
+      - Synthetic Population Statistics
+      - Synthetic Citizens Data
+      - Synthetic Virtual Population
+      - Synthetic Simulated Population
+      - Synthetic Artificial Population
+      - Synthetic Population Sample
+      - Synthetic Demographic Sample
+      - Synthetic Statistical Population
+      - Synthetic Population Dataset
+      - Synthetic Synthetic Data
+      - Synthetic Population Information
+      - Synthetic Resident Information
+      - Synthetic Citizen Information
+      - Synthetic Demographic Information
+      - Synthetic Population Details
+      - Synthetic Residents
+      - Synthetic Virtual Citizens
+      - Synthetic Population Overview
+      - Synthetic Demographic Overview
+      - Synthetic Statistical Overview
+      - Synthetic Population Summary
+      - Synthetic Demographic Summary
+      - Synthetic Statistical Summary
+      - Synthetic Resident Summary
+      - Synthetic Citizen Summary
+      - Synthetic Population Insights
+      - Synthetic Demographic Insights
+      - Synthetic Statistical Insights
+      - Synthetic Insights
+      - Synthetic Population Analysis
+      - Synthetic Demographic Analysis
+      - Synthetic Statistical Analysis
+      - Synthetic Analysis
+      - Synthetic Population Research
+      - Synthetic Demographic Research
+      - Synthetic Statistical Research
+      - Synthetic Research
+      - Synthetic Population Study
+      - Synthetic Demographic Study
+      - Synthetic Statistical Study
+      - Synthetic Study
+      - Synthetic Population Report
+      - Synthetic Demographic Report
+      - Synthetic Statistical Report
+      - Synthetic Report
+      - Synthetic Population Findings
+      - Synthetic Demographic Findings
+      - Synthetic Statistical Findings
+      - Synthetic Findings
+      - Synthetic Population Trends
+      - Synthetic Demographic Trends
+      - Synthetic Statistical Trends
+      - Synthetic Trends
+      - Synthetic Population Patterns
+      - Synthetic Demographic Patterns
+      - Synthetic Statistical Patterns
+      - Synthetic Patterns
+      - Synthetic Population Characteristics
+      - Synthetic Demographic Characteristics
+      - Synthetic Statistical Characteristics
+      - Synthetic Characteristics
+      - Synthetic Population Attributes
+      - Synthetic Demographic Attributes
+      - Synthetic Statistical Attributes
+      - Synthetic Attributes
+      - Synthetic Population Features
+      - Synthetic Demographic Features
+      - Synthetic Statistical Features
+      - Synthetic Features
+      - Synthetic Population Profile
+      - Synthetic Demographic Profile
+      - Synthetic Statistical Profile
+      - Synthetic Profile
+      - Synthetic Population Portrait
+      - Synthetic Demographic Portrait
+      - Synthetic Statistical Portrait
+      - Synthetic Portrait
+      - Synthetic Population Landscape
+      - Synthetic Demographic Landscape
+      - Synthetic Statistical Landscape
+      - Synthetic Landscape
+      - Synthetic Population Outlook
+      - Synthetic Demographic Outlook
+      - Synthetic Statistical Outlook
+      - Synthetic Outlook
+      - Synthetic Population View
+      - Synthetic Demographic View
+      - Synthetic Statistical View
+      - Synthetic View
+      - Synthetic Population Perspective
+      - Synthetic Demographic Perspective
+      - Synthetic Statistical Perspective
+      - Synthetic Perspective
+      - Synthetic Population Insight
+      - Synthetic Demographic Insight
+      - Synthetic Statistical Insight
+      - Synthetic Insight
+      - Synthetic Population Analysis Report
+      - Synthetic Demographic Analysis Report
+      - Synthetic Statistical Analysis Report
+      - Synthetic Analysis Report
+      - Synthetic Population Research Report
+      - Synthetic Demographic Research Report
+      - Synthetic Statistical Research Report
+      - Synthetic Research Report
+      - Synthetic Population Study Report
+      - Synthetic Demographic Study Report
+      - Synthetic Statistical Study Report
+      - Synthetic Study Report
+      - Synthetic Population Findings Report
+      - Synthetic Demographic Findings Report
+      - Synthetic Statistical Findings Report
+      - Synthetic Findings Report
+      - Synthetic Population Trends Report
+      - Synthetic Demographic Trends Report
+      - Synthetic Statistical Trends Report
+      - Synthetic Trends Report
+      - Synthetic Population Patterns Report
+      - Synthetic Demographic Patterns Report
+      - Synthetic Statistical Patterns Report
+      - Synthetic Patterns Report
+      - Synthetic Population Characteristics Report
+      - Synthetic Demographic Characteristics Report
+      - Synthetic Statistical Characteristics Report
+      - Synthetic Characteristics Report
+      - Synthetic Population Attributes Report
+      - Synthetic Demographic Attributes Report
+      - Synthetic Statistical Attributes Report
+      - Synthetic Attributes Report
+      - Synthetic Population Features Report
+      - Synthetic Demographic Features Report
+      - Synthetic Statistical Features Report
+      - Synthetic Features Report
+      - Synthetic Population Profile Report
+      - Synthetic Demographic Profile Report
+      - Synthetic Statistical Profile Report
+      - Synthetic Profile Report
+      - Synthetic Population Portrait Report
+      - Synthetic Demographic Portrait Report
+      - Synthetic Statistical Portrait Report
+      - Synthetic Portrait Report
+      - Synthetic Population Landscape Report
+      - Synthetic Demographic Landscape Report
+      - Synthetic Statistical Landscape Report
+      - Synthetic Landscape Report
+      - Synthetic Population Outlook Report
+      - Synthetic Demographic Outlook Report
+      - Synthetic Statistical Outlook Report
+      - Synthetic Outlook Report
+      - Synthetic Population View Report
+      - Synthetic Demographic View Report
+      - Synthetic Statistical View Report
+      - Synthetic View Report
+      - Synthetic Population Perspective Report
+      - Synthetic Demographic Perspective Report
+      - Synthetic Statistical Perspective Report
+      - Synthetic Perspective Report
+      - Synthetic Population Insight Report
+      - Synthetic Demographic Insight Report
+      - Synthetic Statistical Insight Report
+      - Synthetic Insight Report
+      - Synthetic Population Data
+      - Synthetic Demographic Data
+      - Synthetic Citizen Data
+      - Synthetic Resident Data
+      - Synthetic Population Statistics
+      - Synthetic Citizens Data
+      - Synthetic Virtual Population
+      - Synthetic Simulated Population
+      - Synthetic Artificial Population
+      - Synthetic Population Sample
+      - Synthetic Demographic Sample
+      - Synthetic Statistical Population
+      - Synthetic Population Dataset
+      - Synthetic Synthetic Data
+      - Synthetic Population Information
+      - Synthetic Resident Information
+      - Synthetic Citizen Information
+      - Synthetic Demographic Information
+      - Synthetic Population Details
+      - Synthetic Residents
+      - Synthetic Virtual Citizens
+      - Synthetic Population Overview
+      - Synthetic Demographic Overview
+      - Synthetic Statistical Overview
+      - Synthetic Population Summary
+      - Synthetic Demographic Summary
+      - Synthetic Statistical Summary
+      - Synthetic Resident Summary
+      - Synthetic Citizen Summary
+      - Synthetic Population Insights
+      - Synthetic Demographic Insights
+      - Synthetic Statistical Insights
+      - Synthetic Insights
+      - Synthetic Population Analysis
+      - Synthetic Demographic Analysis
+      - Synthetic Statistical Analysis
+      - Synthetic Analysis
+      - Synthetic Population Research
+      - Synthetic Demographic Research
+      - Synthetic Statistical Research
+      - Synthetic Research
+      - Synthetic Population Study
+      - Synthetic Demographic Study
+      - Synthetic Statistical Study
+      - Synthetic Study
+      - Synthetic Population Report
+      - Synthetic Demographic Report
+      - Synthetic Statistical Report
+      - Synthetic Report
+      - Synthetic Population Findings
+      - Synthetic Demographic Findings
+      - Synthetic Statistical Findings
+      - Synthetic Findings
+      - Synthetic Population Trends
+      - Synthetic Demographic Trends
+      - Synthetic Statistical Trends
+      - Synthetic Trends
+      - Synthetic Population Patterns
+      - Synthetic Demographic Patterns
+      - Synthetic Statistical Patterns
+      - Synthetic Patterns
+      - Synthetic Population Characteristics
+      - Synthetic Demographic Characteristics
+      - Synthetic Statistical Characteristics
+      - Synthetic Characteristics
+      - Synthetic Population Attributes
+      - Synthetic Demographic Attributes
+      - Synthetic Statistical Attributes
+      - Synthetic Attributes
+      - Synthetic Population Features
+      - Synthetic Demographic Features
+      - Synthetic Statistical Features
+      - Synthetic Features
+      - Synthetic Population Profile
+      - Synthetic Demographic Profile
+      - Synthetic Statistical Profile
+      - Synthetic Profile
+      - Synthetic Population Portrait
+      - Synthetic Demographic Portrait
+      - Synthetic Statistical Portrait
+      - Synthetic Portrait
+      - Synthetic Population Landscape
+      - Synthetic Demographic Landscape
+      - Synthetic Statistical Landscape
+      - Synthetic Landscape
+      - Synthetic Population Outlook
+      - Synthetic Demographic Outlook
+      - Synthetic Statistical Outlook
+      - Synthetic Outlook
+      - Synthetic Population View
+      - Synthetic Demographic View
+      - Synthetic Statistical View
+      - Synthetic View
+      - Synthetic Population Perspective
+      - Synthetic Demographic Perspective
+      - Synthetic Statistical Perspective
+      - Synthetic Perspective
+      - Synthetic Population Insight
+      - Synthetic Demographic Insight
+      - Synthetic Statistical Insight
+      - Synthetic Insight
+      - Synthetic Population Analysis Report
+      - Synthetic Demographic Analysis Report
+      - Synthetic Statistical Analysis Report
+      - Synthetic Analysis Report
+      - Synthetic Population Research Report
+      - Synthetic Demographic Research Report
+      - Synthetic Statistical Research Report
+      - Synthetic Research Report
+      - Synthetic Population Study Report
+      - Synthetic Demographic Study Report
+      - Synthetic Statistical Study Report
+      - Synthetic Study Report
+      - Synthetic Population Findings Report
+      - Synthetic Demographic Findings Report
+      - Synthetic Statistical Findings Report
+      - Synthetic Findings Report
+      - Synthetic Population Trends Report
+      - Synthetic Demographic Trends Report
+      - Synthetic Statistical Trends Report
+      - Synthetic Trends Report
+      - Synthetic Population Patterns Report
+      - Synthetic Demographic Patterns Report
+      - Synthetic Statistical Patterns Report
+      - Synthetic Patterns Report
+  - name: V_BLOOD_PRESSURE_VALUES
+    base_table:
+      database: DEFAULT_DATABASE
+      schema: DEFAULT_SCHEMA
+      table: V_BLOOD_PRESSURE_VALUES
+    dimensions:
+      - name: NHS_NUMBER
+        expr: NHS_NUMBER
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - '0001135369'
+          - '0004881954'
+          - '0049848864'
+        description: Unique identifier for the patient in the National Health Service (NHS) system.
+        synonyms:
+          - patient_id
+          - health_service_number
+          - national_health_service_number
+          - medical_record_number
+          - patient_identifier
+    time_dimensions:
+      - name: DATE_TIME
+        expr: DATE_TIME
+        data_type: TIMESTAMP_NTZ(9)
+        sample_values:
+          - '2025-04-12T04:00:00Z'
+          - '2025-04-12T08:00:00Z'
+          - '2025-04-12T12:00:00Z'
+        description: The date and time when the blood pressure reading was taken, in Coordinated Universal Time (UTC) format.
+        synonyms:
+          - timestamp
+          - datetime_value
+          - date_and_time
+          - time_of_measurement
+          - measurement_timestamp
+          - recorded_time
+    facts:
+      - name: SYSTOLIC_BLOOD_PRESSURE
+        expr: SYSTOLIC_BLOOD_PRESSURE
+        data_type: NUMBER(38,0)
+        sample_values:
+          - '132'
+          - '145'
+          - '142'
+        description: The systolic blood pressure reading, which is the highest pressure in the arteries when the heart beats, measured in millimeters of mercury (mmHg).
+        synonyms:
+          - top_number
+          - systolic_bp
+          - systolic_reading
+          - upper_blood_pressure
+          - systolic_value
+      - name: DIASTOLIC_BLOOD_PRESSURE
+        expr: DIASTOLIC_BLOOD_PRESSURE
+        data_type: NUMBER(38,0)
+        sample_values:
+          - '82'
+          - '90'
+          - '92'
+        description: The Diastolic Blood Pressure column represents the minimum pressure in the arteries between heartbeats, measured in millimeters of mercury (mmHg), indicating the pressure in the arteries when the heart is at rest and refilling with blood.
+        synonyms:
+          - diastolic_bp
+          - resting_diastolic_pressure
+          - low_blood_pressure
+          - diastolic_reading
+          - minimum_blood_pressure
+          - diastolic_value
+    primary_key:
+      columns:
+        - NHS_NUMBER
+    description: blood pressure values of a sample of covid trial patients selected within the UK
+    synonyms:
+      - blood_pressure_values
+      - blood_pressure_table
+      - bp_values
+      - hypertension_data
+      - cardiovascular_data
+      - vital_signs
+      - blood_pressure_readings
+      - medical_records
+      - health_data
+      - patient_vitals
+  - name: COVID_OCR_SCORE2
+    base_table:
+      database: DEFAULT_DATABASE
+      schema: DEFAULT_SCHEMA
+      table: COVID_OCR_SCORE2
+    dimensions:
+      - name: FEMALE_PATIENT_CHILDBEARING
+        expr: FEMALE_PATIENT_CHILDBEARING
+        data_type: VARCHAR(16777216)
+        description: Indicates whether a female patient is of childbearing age or potential, typically defined as between the ages of 15 and 44, where "Yes" denotes the patient is of childbearing age or potential and "No" denotes the patient is not.
+        sample_values:
+          - 'No'
+          - 'Yes'
+        synonyms:
+          - female_patient_childbearing_status
+          - female_childbearing_status
+          - patient_childbearing_info
+          - female_patient_pregnancy_status
+          - childbearing_status_of_female_patient
+      - name: CONSENT
+        expr: CONSENT
+        data_type: VARCHAR(16777216)
+        description: Indicates whether the patient has given consent for the COVID-19 test.
+        sample_values:
+          - 'Yes'
+          - 'No'
+        synonyms:
+          - agreement
+          - approval
+          - authorization
+          - confirmation
+          - permission
+          - assent
+      - name: NHS_NUMBER
+        expr: NHS_NUMBER
+        data_type: VARCHAR(16777216)
+        description: Unique identifier for a patient in the National Health Service (NHS) system.
+        sample_values:
+          - '0013718725'
+          - '0009480516'
+          - '0013764129'
+        synonyms:
+          - national_health_service_number
+          - health_service_number
+          - patient_id
+          - unique_patient_identifier
+          - medical_record_number
+      - name: REASON
+        expr: REASON
+        data_type: VARCHAR(16777216)
+        description: Reasons for not getting vaccinated against COVID-19.
+        sample_values:
+          - Severe allergic reaction to a vaccine in the past
+          - I am concerned about the long-term side effects of the vaccine
+        synonyms:
+          - explanation
+          - justification
+          - cause
+          - motive
+          - rationale
+          - grounds
+          - basis
+          - underlying_reason
+    primary_key:
+      columns:
+        - NHS_NUMBER
+relationships:
+  - name: blood pressure values to population
+    join_type: inner
+    relationship_type: many_to_one
+    left_table: V_BLOOD_PRESSURE_VALUES
+    relationship_columns:
+      - left_column: NHS_NUMBER
+        right_column: NHS_NUMBER
+    right_table: SYNTHETIC_POPULATION
+  - relationship_type: many_to_one
+    join_type: inner
+    left_table: GP_NOTES_CLEANED
+    relationship_columns:
+      - left_column: NHS_NUMBER
+        right_column: NHS_NUMBER
+    right_table: SYNTHETIC_POPULATION
+    name: Gp Notes to population data
+  - join_type: inner
+    relationship_type: one_to_one
+    left_table: COVID_OCR_SCORE2
+    relationship_columns:
+      - left_column: NHS_NUMBER
+        right_column: NHS_NUMBER
+    right_table: SYNTHETIC_POPULATION
+    name: covid trial consent to population data
